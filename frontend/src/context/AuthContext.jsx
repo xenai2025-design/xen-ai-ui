@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [isGuestMode, setIsGuestMode] = useState(false);
 
   // Set axios authorization header
   useEffect(() => {
@@ -148,10 +149,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const enableGuestMode = () => {
+    setIsGuestMode(true);
+    setLoading(false);
+  };
+
+  const disableGuestMode = () => {
+    setIsGuestMode(false);
+  };
+
   const value = {
     user,
     loading,
     isAuthenticated: !!user,
+    isGuestMode,
+    enableGuestMode,
+    disableGuestMode,
     login,
     register,
     logout,

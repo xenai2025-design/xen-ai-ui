@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import session from 'express-session';
 import { testConnection, initializeDatabase } from './config/database.js';
 import authRoutes from './routes/auth.js';
+import chatRoutes from './routes/chat.js';
 import passport from './config/passport.js';
 
 // Load environment variables
@@ -14,7 +15,10 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:5173',
+    'http://localhost:5174'
+  ],
   credentials: true
 }));
 
@@ -54,6 +58,7 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/chat', chatRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

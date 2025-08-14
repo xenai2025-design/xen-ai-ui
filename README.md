@@ -6,7 +6,7 @@ A modern AI-powered application with authentication system built using React, No
 
 - **Frontend**: React + Vite with Tailwind CSS
 - **Backend**: Node.js + Express API
-- **Database**: SQLite (local file-based database)
+- **Database**: ite (local file-based database)
 - **Authentication**: JWT-based authentication + Google OAuth 2.0
 - **UI/UX**: Dark theme with orange accents, smooth animations
 - **Security**: Password hashing, input validation, protected routes
@@ -17,7 +17,7 @@ A modern AI-powered application with authentication system built using React, No
 xen-ai-ui/
 ├── backend/                 # Node.js backend
 │   ├── config/
-│   │   ├── database.js     # SQLite configuration
+│   │   ├── database.js     # ite configuration
 │   │   └── passport.js     # Google OAuth configuration
 │   ├── middleware/
 │   │   └── auth.js         # JWT authentication middleware
@@ -28,7 +28,7 @@ xen-ai-ui/
 │   ├── .env                # Environment variables
 │   ├── package.json        # Backend dependencies
 │   ├── server.js           # Express server
-│   └── database.sqlite     # SQLite database file (auto-created)
+│   └── database.ite     # SQLite database file (auto-created)
 ├── frontend/               # React frontend
 │   ├── src/
 │   │   ├── components/     # React components

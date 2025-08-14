@@ -4,11 +4,19 @@ import MultiModalAI from './components/MultiModalAI'
 import Login from './components/Login'
 import Register from './components/Register'
 import AuthCallback from './components/AuthCallback'
+import { useEffect } from 'react'
 
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth()
-  
+// Main App Component with Guest Mode Support
+const AppContent = () => {
+  const { loading, enableGuestMode } = useAuth()
+
+  useEffect(() => {
+    // Enable guest mode if not authenticated after loading
+    if (!loading) {
+      enableGuestMode()
+    }
+  }, [loading, enableGuestMode])
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -19,26 +27,24 @@ const ProtectedRoute = ({ children }) => {
       </div>
     )
   }
-  
-  return isAuthenticated ? children : <Navigate to="/login" replace />
-}
 
-// Public Route Component (redirect to dashboard if authenticated)
-const PublicRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth()
-  
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin"></div>
-          <span className="text-white">Loading...</span>
-        </div>
-      </div>
-    )
-  }
-  
-  return isAuthenticated ? <Navigate to="/dashboard" replace /> : children
+  return (
+    <Routes>
+      {/* Legacy login/register routes (now handled by modal) */}
+      <Route path="/login" element={<Navigate to="/" replace />} />
+      <Route path="/register" element={<Navigate to="/" replace />} />
+      
+      {/* OAuth Callback Route */}
+      <Route path="/auth/callback" element={<AuthCallback />} />
+      
+      {/* Main App Route - accessible to everyone */}
+      <Route path="/" element={<MultiModalAI />} />
+      <Route path="/dashboard" element={<Navigate to="/" replace />} />
+      
+      {/* Catch all route */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
 }
 
 function App() {
@@ -46,44 +52,7 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="App">
-          <Routes>
-            {/* Public Routes */}
-            <Route 
-              path="/login" 
-              element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              } 
-            />
-            <Route 
-              path="/register" 
-              element={
-                <PublicRoute>
-                  <Register />
-                </PublicRoute>
-              } 
-            />
-            
-            {/* OAuth Callback Route */}
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            
-            {/* Protected Routes */}
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <MultiModalAI />
-                </ProtectedRoute>
-              } 
-            />
-            
-            {/* Default redirect */}
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            
-            {/* Catch all route */}
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
+          <AppContent />
         </div>
       </Router>
     </AuthProvider>
