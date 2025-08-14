@@ -13,6 +13,7 @@ const LoginModal = ({ isOpen, onClose }) => {
   const [error, setError] = useState('');
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [registerData, setRegisterData] = useState({
+    username: '',
     first_name: '',
     last_name: '',
     email: '',
@@ -51,6 +52,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         return;
       }
       result = await register({
+        username: registerData.username,
         first_name: registerData.first_name,
         last_name: registerData.last_name,
         email: registerData.email,
@@ -65,6 +67,7 @@ const LoginModal = ({ isOpen, onClose }) => {
       // Reset form
       setFormData({ email: '', password: '' });
       setRegisterData({
+        username: '',
         first_name: '',
         last_name: '',
         email: '',
@@ -84,6 +87,7 @@ const LoginModal = ({ isOpen, onClose }) => {
     setError('');
     setFormData({ email: '', password: '' });
     setRegisterData({
+      username: '',
       first_name: '',
       last_name: '',
       email: '',
@@ -192,6 +196,23 @@ const LoginModal = ({ isOpen, onClose }) => {
                         placeholder="Last name"
                       />
                     </div>
+                  </div>
+
+                  {/* Username Field */}
+                  <div>
+                    <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+                      Username
+                    </label>
+                    <input
+                      type="text"
+                      id="username"
+                      name="username"
+                      value={registerData.username}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Choose a username"
+                    />
                   </div>
                 </>
               )}

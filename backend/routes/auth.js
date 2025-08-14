@@ -107,6 +107,12 @@ router.post('/register', validateRegistration, async (req, res) => {
 
   } catch (error) {
     console.error('Registration error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      errno: error.errno,
+      sqlMessage: error.sqlMessage
+    });
     
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({
@@ -136,10 +142,23 @@ router.post('/login', validateLogin, async (req, res) => {
     }
 
     const { email, password } = req.body;
+    console.log('Login attempt for email:', email);
 
     // Find user by email
     const user = await User.findByEmail(email);
+    console.log('User found:', user ? 'Yes' : 'No');
+    if (user) {
+      console.log('User details:', {
+        id: user.id,
+        email: user.email,
+        is_active: user.is_active,
+        provider: user.provider,
+        hasPassword: !!user.password
+      });
+    }
+    
     if (!user) {
+      console.log('User not found for email:', email);
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password'
@@ -147,8 +166,12 @@ router.post('/login', validateLogin, async (req, res) => {
     }
 
     // Verify password
+    console.log('Verifying password...');
     const isValidPassword = await User.verifyPassword(password, user.password);
+    console.log('Password valid:', isValidPassword);
+    
     if (!isValidPassword) {
+      console.log('Password verification failed for user:', email);
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password'
@@ -161,6 +184,7 @@ router.post('/login', validateLogin, async (req, res) => {
     // Remove password from user data
     const { password: _, ...userData } = user;
 
+    console.log('Login successful for user:', email);
     res.json({
       success: true,
       message: 'Login successful',

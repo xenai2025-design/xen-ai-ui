@@ -9,6 +9,8 @@ class User {
     this.first_name = userData.first_name;
     this.last_name = userData.last_name;
     this.avatar_url = userData.avatar_url;
+    this.google_id = userData.google_id;
+    this.provider = userData.provider || 'local';
   }
 
   // Hash password before saving
@@ -26,8 +28,8 @@ class User {
       }
       
       const sql = `
-        INSERT INTO users (username, email, password, first_name, last_name, avatar_url, google_id, provider)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO users (username, email, password, first_name, last_name, avatar_url, google_id, provider, is_active)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
       
       const result = await query.run(sql, [
@@ -38,11 +40,13 @@ class User {
         this.last_name || null,
         this.avatar_url || null,
         this.google_id || null,
-        this.provider || 'local'
+        this.provider || 'local',
+        1  // Explicitly set is_active = 1
       ]);
       
       return result.lastID;
     } catch (error) {
+      console.error('User save error:', error);
       throw error;
     }
   }
@@ -126,7 +130,7 @@ class User {
     try {
       const sql = 'SELECT id FROM users WHERE email = ?';
       const result = await query.get(sql, [email]);
-      return result !== undefined;
+      return result !== null;
     } catch (error) {
       throw error;
     }
@@ -137,7 +141,7 @@ class User {
     try {
       const sql = 'SELECT id FROM users WHERE username = ?';
       const result = await query.get(sql, [username]);
-      return result !== undefined;
+      return result !== null;
     } catch (error) {
       throw error;
     }
