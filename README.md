@@ -183,8 +183,18 @@ CREATE TABLE users (
 
 ### Building for Production
 
-1. Build frontend: `cd frontend && npm run build`
-2. Start backend: `cd backend && npm start`
+1. Build frontend: `npm run build`
+2. The built files will be in the `dist` directory
+
+### Deployment
+
+#### AWS Amplify (Frontend Only)
+For deploying the frontend to AWS Amplify, see the detailed guide: `AWS_AMPLIFY_DEPLOYMENT.md`
+
+#### Full Stack Deployment
+1. Deploy backend to your preferred hosting service (AWS EC2, Heroku, Railway, etc.)
+2. Update the `VITE_API_BASE_URL` environment variable to point to your backend
+3. Deploy frontend to AWS Amplify or your preferred static hosting service
 
 ## Technologies Used
 
