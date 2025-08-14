@@ -57,6 +57,52 @@ const initializeDatabase = async () => {
     await connection.execute(createUsersTable);
     console.log('✅ Users table created/verified successfully');
     
+    // Create AI model configurations table
+    const createAIModelConfigsTable = `
+      CREATE TABLE IF NOT EXISTS ai_model_configs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        config_name VARCHAR(255) UNIQUE NOT NULL,
+        provider VARCHAR(100) NOT NULL,
+        model_name VARCHAR(255) NOT NULL,
+        endpoint_url TEXT NOT NULL,
+        api_key_encrypted TEXT NOT NULL,
+        model_params JSON,
+        system_prompt TEXT,
+        max_tokens INT DEFAULT 1000,
+        temperature DECIMAL(3,2) DEFAULT 0.70,
+        is_active BOOLEAN DEFAULT TRUE,
+        is_default BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_provider (provider),
+        INDEX idx_active (is_active),
+        INDEX idx_default (is_default)
+      )
+    `;
+    
+    await connection.execute(createAIModelConfigsTable);
+    console.log('✅ AI Model Configs table created/verified successfully');
+    
+    // Create app configurations table for general settings
+    const createAppConfigsTable = `
+      CREATE TABLE IF NOT EXISTS app_configs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        config_key VARCHAR(255) UNIQUE NOT NULL,
+        config_value TEXT,
+        config_type ENUM('string', 'number', 'boolean', 'json') DEFAULT 'string',
+        description TEXT,
+        is_sensitive BOOLEAN DEFAULT FALSE,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_key (config_key),
+        INDEX idx_active (is_active)
+      )
+    `;
+    
+    await connection.execute(createAppConfigsTable);
+    console.log('✅ App Configs table created/verified successfully');
+    
     connection.release();
     
   } catch (error) {
