@@ -3,21 +3,28 @@
 ## Problem
 Your AWS Amplify frontend (HTTPS) is trying to connect to an Elastic Beanstalk backend (HTTP), causing a "Mixed Content" error.
 
-## ✅ Quick Fix Applied
-I've updated your code to use HTTPS for the backend URL:
-- Changed from: `http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api`
-- Changed to: `https://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api`
+## Current Status
+- ❌ HTTPS is not configured on your Elastic Beanstalk environment
+- ❌ Connection timeout on port 443 (HTTPS)
+- ✅ HTTP connection works but blocked by browser security
 
-## Next Steps
+## ⚠️ Temporary Revert
+I've reverted the code to use HTTP temporarily, but you'll still get mixed content errors in production.
 
-### 1. Deploy Updated Frontend
-```bash
-git add .
-git commit -m "Fix HTTPS mixed content issue"
-git push origin main
-```
+## 🚀 Solutions (Choose One)
 
-### 2. Configure HTTPS on Elastic Beanstalk
+### Solution 1: Configure HTTPS on Elastic Beanstalk (Recommended)
+
+#### Step 1: Request SSL Certificate
+1. Go to **AWS Certificate Manager (ACM)**
+2. Click **Request a certificate**
+3. Choose **Request a public certificate**
+4. Add domain name: `xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com`
+5. Choose **DNS validation** (easier) or **Email validation**
+6. Click **Request**
+7. Complete validation process
+
+#### Step 2: Configure Load Balancer
 
 #### Option A: Enable HTTPS Listener (Recommended)
 1. Go to **Elastic Beanstalk Console**
@@ -84,12 +91,37 @@ After deploying:
 2. Ensure your Amplify domain is whitelisted
 3. Check that credentials are properly handled
 
-### Alternative: Use CloudFront
-If you can't enable HTTPS on Elastic Beanstalk:
-1. Create CloudFront distribution
-2. Point it to your Elastic Beanstalk environment
-3. Enable HTTPS on CloudFront
-4. Update `VITE_API_BASE_URL` to CloudFront URL
+### Solution 2: Use CloudFront (Alternative)
+
+If you can't configure HTTPS on Elastic Beanstalk:
+
+#### Step 1: Create CloudFront Distribution
+1. Go to **CloudFront Console**
+2. Click **Create Distribution**
+3. Configure:
+   - **Origin Domain**: `xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com`
+   - **Protocol**: HTTP Only (since your backend is HTTP)
+   - **Viewer Protocol Policy**: Redirect HTTP to HTTPS
+   - **Allowed HTTP Methods**: GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE
+   - **Cache Policy**: CachingDisabled (for API)
+
+#### Step 2: Update Frontend
+1. Wait for CloudFront deployment (15-20 minutes)
+2. Update `VITE_API_BASE_URL` to your CloudFront domain
+3. Example: `https://d1234567890.cloudfront.net/api`
+
+### Solution 3: Quick Development Fix
+
+For immediate testing, you can temporarily disable mixed content protection:
+
+#### Chrome (Development Only):
+1. Launch Chrome with: `--disable-web-security --user-data-dir=/tmp/chrome_dev`
+2. **⚠️ WARNING**: Only use for development, never in production
+
+#### Firefox (Development Only):
+1. Go to `about:config`
+2. Set `security.mixed_content.block_active_content` to `false`
+3. **⚠️ WARNING**: Only use for development, never in production
 
 ## Security Best Practices
 
