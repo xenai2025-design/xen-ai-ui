@@ -8,7 +8,7 @@ A modern AI-powered application with authentication system built using React, No
 - **Backend**: Node.js + Express API
 - **Database**: SQLite (local file-based database)
 - **Authentication**: JWT-based authentication + Google OAuth 2.0
-- **UI/UX**: Dark theme with orange accents, smooth animations
+- **UI/UX**: Dark theme with orange accents, smooth animations 
 - **Security**: Password hashing, input validation, protected routes
 
 ## Project Structure
