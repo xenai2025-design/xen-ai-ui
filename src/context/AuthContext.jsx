@@ -4,7 +4,7 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 // Configure axios defaults
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api';
+const API_BASE_URL = 'http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api';
 axios.defaults.baseURL = API_BASE_URL;
 
 export const useAuth = () => {
@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [isGuestMode, setIsGuestMode] = useState(false);
 
   // Set axios authorization header
   useEffect(() => {
@@ -148,10 +149,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const enableGuestMode = () => {
+    setIsGuestMode(true);
+    setLoading(false);
+  };
+
+  const disableGuestMode = () => {
+    setIsGuestMode(false);
+  };
+
   const value = {
     user,
     loading,
     isAuthenticated: !!user,
+    isGuestMode,
+    enableGuestMode,
+    disableGuestMode,
     login,
     register,
     logout,
