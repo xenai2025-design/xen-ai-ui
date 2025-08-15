@@ -269,7 +269,7 @@ const ChatBot = () => {
 
     try {
       // Call our secure backend endpoint
-      const response = await fetch('https://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api/chat/message', {
+      const response = await fetch('http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api/chat/message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
