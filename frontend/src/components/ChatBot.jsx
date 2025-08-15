@@ -497,7 +497,7 @@ const ChatBot = () => {
           
           <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
             <span>Press Enter to send, Shift+Enter for new line</span>
-            <span>Powered by Mistral AI</span>
+            <span>Powered by Xen AI</span>
           </div>
         </form>
       </div>
