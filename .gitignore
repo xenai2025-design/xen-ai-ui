@@ -5,6 +5,11 @@
 /.pnp
 .pnp.js
 
+# Environment Variables
+.env
+/backend/.env
+/frontend/.env
+
 # Testing
 /coverage
 
