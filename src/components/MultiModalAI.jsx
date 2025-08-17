@@ -165,7 +165,7 @@ const MultiModalAI = () => {
                         {!isAuthenticated && (
                           <div className="absolute -top-1 -right-1">
                             <svg className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                              <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 616 0z" clipRule="evenodd" />
                             </svg>
                           </div>
                         )}
@@ -328,73 +328,6 @@ const GuestDashboard = () => {
         <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden" style={{ height: '600px' }}>
           <div className="h-full">
             <ChatBot />
-          </div>
-        </div>
-
-        {/* Premium Features Preview */}
-        <div className="bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 rounded-xl p-6">
-          <div className="text-center mb-6">
-            <h3 className="text-xl font-bold text-white mb-2">Unlock Premium AI Tools</h3>
-            <p className="text-gray-300">Sign in to access advanced features and unlimited usage</p>
-          </div>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            {[
-              {
-                icon: '🎨',
-                title: 'Image Generation',
-                description: 'Create stunning visuals',
-                color: 'from-blue-500 to-purple-500'
-              },
-              {
-                icon: '🎬',
-                title: 'Video Creation',
-                description: 'Generate dynamic videos',
-                color: 'from-green-500 to-teal-500'
-              },
-              {
-                icon: '✍️',
-                title: 'Content Writing',
-                description: 'Professional copywriting',
-                color: 'from-yellow-500 to-orange-500'
-              },
-              {
-                icon: '🎤',
-                title: 'Voice Synthesis',
-                description: 'Natural speech generation',
-                color: 'from-pink-500 to-red-500'
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ scale: 1.02 }}
-                className="bg-gray-800/50 border border-gray-700 rounded-lg p-3 sm:p-4 text-center cursor-pointer"
-                onClick={() => setIsLoginModalOpen(true)}
-              >
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center text-lg sm:text-xl mb-2 sm:mb-3 mx-auto`}>
-                  {feature.icon}
-                </div>
-                <h4 className="text-white font-semibold text-xs sm:text-sm mb-1">{feature.title}</h4>
-                <p className="text-gray-400 text-xs mb-2 sm:mb-3 hidden sm:block">{feature.description}</p>
-                <div className="flex items-center justify-center space-x-1 text-orange-400">
-                  <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-xs font-medium">Premium</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="text-center mt-6">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setIsLoginModalOpen(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base"
-            >
-              Sign In to Unlock All Features
-            </motion.button>
           </div>
         </div>
       </div>
