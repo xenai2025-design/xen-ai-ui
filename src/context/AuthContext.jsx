@@ -160,10 +160,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
-<<<<<<< HEAD
-=======
     token,
->>>>>>> 5e0389cfb7c6accc3dbe3d705c3305e2ec896634
     loading,
     isAuthenticated: !!user,
     isGuestMode,
