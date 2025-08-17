@@ -9,6 +9,9 @@ import authRoutes from './routes/auth.js';
 import chatRoutes from './routes/chat.js';
 import configRoutes from './routes/config.js';
 import imageRoutes from './routes/image.js';
+import storyRoutes from './routes/story.js';
+import resumeRoutes from './routes/resume.js';
+import contentRoutes from './routes/content.js';
 import passport from './config/passport.js';
 import configService from './services/configService.js';
 
@@ -73,6 +76,9 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/config', configRoutes);
+app.use('/api/story', storyRoutes);
+app.use('/api/resume', resumeRoutes);
+app.use('/api/content', contentRoutes);
 app.use('/api/image', imageRoutes);
 
 // 404 handler

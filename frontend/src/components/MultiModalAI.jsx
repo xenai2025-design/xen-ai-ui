@@ -6,6 +6,8 @@ import ImageGenerationPage from './ImageGenerationPage'
 import VideoGenerationPage from './VideoGenerationPage'
 import ContentWritingPage from './ContentWritingPage'
 import VoiceSynthesisPage from './VoiceSynthesisPage'
+import StoryGeneratorPage from './StoryGeneratorPage'
+import ResumeBuilderPage from './ResumeBuilderPage'
 import HistoryPanel from './HistoryPanel'
 import LoginModal from './LoginModal'
 import ChatBot from './ChatBot'
@@ -56,6 +58,16 @@ const MultiModalAI = () => {
       name: 'Voice Synthesis',
       icon: '🎤',
       description: 'Convert text to natural-sounding speech'
+    },
+    story: {
+      name: 'Story Generator',
+      icon: '📖',
+      description: 'Create stories, poems, or scripts'
+    },
+    resume: {
+      name: 'Resume Builder',
+      icon: '📄',
+      description: 'Generate resumes and cover letters'
     }
   }
 
@@ -273,6 +285,14 @@ const MultiModalAI = () => {
             
             {activeTab === 'generate' && activeModule === 'voice' && isAuthenticated && (
               <VoiceSynthesisPage />
+            )}
+            
+            {activeTab === 'generate' && activeModule === 'story' && isAuthenticated && (
+              <StoryGeneratorPage />
+            )}
+            
+            {activeTab === 'generate' && activeModule === 'resume' && isAuthenticated && (
+              <ResumeBuilderPage />
             )}
             
             {activeTab === 'profile' && (
