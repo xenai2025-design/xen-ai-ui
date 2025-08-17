@@ -4,16 +4,7 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 // Configure axios defaults
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api';
-
-// Debug logging
-console.log('🔍 Environment Variables:', {
-  VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
-  API_BASE_URL: API_BASE_URL,
-  NODE_ENV: import.meta.env.NODE_ENV,
-  MODE: import.meta.env.MODE
-});
-
+const API_BASE_URL = 'http://localhost:5000/api';
 axios.defaults.baseURL = API_BASE_URL;
 
 export const useAuth = () => {
@@ -169,6 +160,10 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
+<<<<<<< HEAD
+=======
+    token,
+>>>>>>> 5e0389cfb7c6accc3dbe3d705c3305e2ec896634
     loading,
     isAuthenticated: !!user,
     isGuestMode,
