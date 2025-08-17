@@ -1,7 +1,7 @@
 // Centralized API configuration
 const API_CONFIG = {
   // Base URL - can be overridden by environment variables
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com',
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev',
   
   // API endpoints
   ENDPOINTS: {

@@ -53,11 +53,11 @@ Enable HTTPS on your Elastic Beanstalk environment to fix the mixed content erro
 
 1. **Test Backend Directly**
    ```bash
-   curl http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api/health
+   curl https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/health
    ```
 
 2. **If it works, update your frontend:**
-   - Set environment variable in Amplify: `VITE_API_BASE_URL=http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api`
+   - Set environment variable in Amplify: `VITE_API_BASE_URL=https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api`
    - Or update the code and redeploy
 
 ### Step 4: Update Frontend
@@ -65,13 +65,13 @@ Enable HTTPS on your Elastic Beanstalk environment to fix the mixed content erro
 1. **Option A: Environment Variable (Recommended)**
    - Go to AWS Amplify Console
    - Your app → App settings → Environment variables
-   - Add: `VITE_API_BASE_URL=http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api`
+   - Add: `VITE_API_BASE_URL=https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api`
    - Redeploy
 
 2. **Option B: Code Update**
    ```javascript
    // In src/context/AuthContext.jsx
-   const API_BASE_URL = 'http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api';
+   const API_BASE_URL = 'https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api';
    ```
 
 ## 🔍 Troubleshooting

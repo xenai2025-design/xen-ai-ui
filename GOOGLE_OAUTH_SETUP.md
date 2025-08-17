@@ -48,7 +48,7 @@ This guide will help you set up Google OAuth credentials for the Xen-AI applicat
    - `http://localhost:5173` (for development frontend)
    - `http://localhost:5000` (for development backend)
 6. Add Authorized redirect URIs:
-   - `http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api/auth/google/callback`
+   - `https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/auth/google/callback`
 7. Click "Create"
 
 ### 5. Copy Credentials
@@ -77,7 +77,7 @@ SESSION_SECRET=your-super-secret-session-key-change-in-production
 # Google OAuth Configuration
 GOOGLE_CLIENT_ID=your-actual-google-client-id-here
 GOOGLE_CLIENT_SECRET=your-actual-google-client-secret-here
-GOOGLE_CALLBACK_URL=http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api/auth/google/callback
+GOOGLE_CALLBACK_URL=https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/auth/google/callback
 ```
 
 ### 7. Test the Setup

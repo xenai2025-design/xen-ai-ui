@@ -8,7 +8,7 @@ CloudFront can't reach your Elastic Beanstalk environment because it's in a priv
 ### Step 1: Test Public Accessibility
 ```bash
 # Test if your EB is publicly accessible
-curl http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api/health
+curl https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/health
 
 # If this fails, your EB is not publicly accessible
 ```
@@ -60,7 +60,7 @@ curl http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api
 ### Step 1: Identify the Issue
 ```bash
 # Test current accessibility
-curl -I http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com
+curl -I https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev
 
 # Expected: HTTP 200 or 404 (connection works)
 # Problem: Connection timeout or refused
@@ -97,7 +97,7 @@ aws ec2 authorize-security-group-ingress \
 
 ```bash
 # Test accessibility
-curl http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api/health
+curl https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/health
 
 # Should return your API response
 ```

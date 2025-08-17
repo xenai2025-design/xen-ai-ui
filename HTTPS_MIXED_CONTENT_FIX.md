@@ -70,7 +70,7 @@ app.use(cors({
 3. Go to **App settings** → **Environment variables**
 4. Add/Update:
    - Key: `VITE_API_BASE_URL`
-   - Value: `http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api`
+   - Value: `https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api`
 
 ### 5. Test the Connection
 
