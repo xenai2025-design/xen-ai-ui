@@ -23,7 +23,7 @@ const ImageGenerationPage = () => {
     try {
       const [width, height] = imageSize.split('x').map(Number)
       
-      const response = await fetch('http://localhost:5000/api/image/generate', {
+      const response = await fetch('https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/image/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

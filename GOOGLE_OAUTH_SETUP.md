@@ -111,7 +111,7 @@ For production deployment, you'll need to:
 ### Common Issues
 
 1. **"redirect_uri_mismatch" error**
-   - Ensure the callback URL in Google Console matches exactly: `http://localhost:5000/api/auth/google/callback`
+   - Ensure the callback URL in Google Console matches exactly: `https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/auth/google/callback`
    - Check for trailing slashes or typos
 
 2. **"access_blocked" error**
