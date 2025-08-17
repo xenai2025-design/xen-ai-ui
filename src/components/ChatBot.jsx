@@ -269,7 +269,7 @@ const ChatBot = () => {
 
     try {
       // Call our secure backend endpoint
-      const response = await fetch('http://localhost:5000/api/chat/message', {
+      const response = await fetch('https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/chat/message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

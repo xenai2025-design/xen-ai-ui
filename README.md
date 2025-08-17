@@ -71,7 +71,7 @@ xen-ai-ui/
    # Google OAuth Configuration
    GOOGLE_CLIENT_ID=your_google_client_id_here
    GOOGLE_CLIENT_SECRET=your_google_client_secret_here
-   GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
+   GOOGLE_CALLBACK_URL=https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/auth/google/callback
    
    # Session Configuration
    SESSION_SECRET=your_session_secret_here
