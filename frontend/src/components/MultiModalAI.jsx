@@ -17,7 +17,7 @@ const MultiModalAI = () => {
   const [activeTab, setActiveTab] = useState('chat')
   const [isHistoryOpen, setIsHistoryOpen] = useState(false)
   const [history, setHistory] = useState([])
-  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false)
+  const [isMenuCollapsed, setIsMenuCollapsed] = useState(true)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   
@@ -77,14 +77,28 @@ const MultiModalAI = () => {
         )}
 
         {/* Sidebar - Mobile Responsive with Overlay */}
-        <aside className={`
-          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
-          md:translate-x-0
-          ${isMenuCollapsed ? 'md:w-16' : 'md:w-64'} 
-          fixed md:relative
-          w-64 min-h-screen bg-black border-r border-gray-800 
-          transition-all duration-300 z-50
-        `}>
+        <aside 
+          className={`
+            ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
+            md:translate-x-0
+            ${isMenuCollapsed ? 'md:w-16' : 'md:w-64'} 
+            fixed md:relative
+            w-64 min-h-screen bg-black border-r border-gray-800 
+            transition-all duration-300 z-50
+          `}
+          onMouseEnter={() => {
+            // Only apply hover effect on desktop (not mobile)
+            if (window.innerWidth >= 768) {
+              setIsMenuCollapsed(false)
+            }
+          }}
+          onMouseLeave={() => {
+            // Only apply hover effect on desktop (not mobile)
+            if (window.innerWidth >= 768) {
+              setIsMenuCollapsed(true)
+            }
+          }}
+        >
           <div className="py-6">
             {/* Menu Toggle Button */}
             <div className="px-4 mb-6 flex justify-between items-center">
