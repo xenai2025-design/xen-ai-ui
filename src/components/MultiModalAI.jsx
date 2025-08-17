@@ -165,7 +165,11 @@ const MultiModalAI = () => {
                         {!isAuthenticated && (
                           <div className="absolute -top-1 -right-1">
                             <svg className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+<<<<<<< HEAD
                               <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+=======
+                              <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 616 0z" clipRule="evenodd" />
+>>>>>>> 5e0389cfb7c6accc3dbe3d705c3305e2ec896634
                             </svg>
                           </div>
                         )}
@@ -179,7 +183,11 @@ const MultiModalAI = () => {
                         {!isAuthenticated && (
                           <div className="flex items-center space-x-1">
                             <svg className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+<<<<<<< HEAD
                               <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+=======
+                              <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 616 0z" clipRule="evenodd" />
+>>>>>>> 5e0389cfb7c6accc3dbe3d705c3305e2ec896634
                             </svg>
                           </div>
                         )}
@@ -330,6 +338,7 @@ const GuestDashboard = () => {
             <ChatBot />
           </div>
         </div>
+<<<<<<< HEAD
 
         {/* Premium Features Preview */}
         <div className="bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 rounded-xl p-6">
@@ -397,6 +406,8 @@ const GuestDashboard = () => {
             </motion.button>
           </div>
         </div>
+=======
+>>>>>>> 5e0389cfb7c6accc3dbe3d705c3305e2ec896634
       </div>
 
       <LoginModal 

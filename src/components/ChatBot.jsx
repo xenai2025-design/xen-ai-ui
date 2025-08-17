@@ -269,7 +269,7 @@ const ChatBot = () => {
 
     try {
       // Call our secure backend endpoint
-      const response = await fetch('http://xen-ai-test-env.eba-yqhbvx3c.ap-northeast-1.elasticbeanstalk.com/api/chat/message', {
+      const response = await fetch('http://localhost:5000/api/chat/message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -497,7 +497,11 @@ const ChatBot = () => {
           
           <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
             <span>Press Enter to send, Shift+Enter for new line</span>
+<<<<<<< HEAD
             <span>Powered by Mistral AI</span>
+=======
+            <span>Powered by Xen AI</span>
+>>>>>>> 5e0389cfb7c6accc3dbe3d705c3305e2ec896634
           </div>
         </form>
       </div>
