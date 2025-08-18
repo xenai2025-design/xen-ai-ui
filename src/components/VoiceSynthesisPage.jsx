@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { pipeline } from '@xenova/transformers'
 import { SpeakerWaveIcon, SparklesIcon, ArrowDownTrayIcon, PlayIcon, PauseIcon } from '@heroicons/react/24/outline'
 
 const VoiceSynthesisPage = () => {
@@ -8,18 +9,43 @@ const VoiceSynthesisPage = () => {
   const [generatedAudio, setGeneratedAudio] = useState(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [voiceType, setVoiceType] = useState('natural')
+  const [audioPlayer, setAudioPlayer] = useState(null)
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return
     
     setIsGenerating(true)
     
-    // Simulate API call
-    setTimeout(() => {
-      // Using a sample audio file for demonstration
-      setGeneratedAudio('https://www.soundjay.com/misc/sounds/bell-ringing-05.wav')
+    try {
+      // Load TTS pipeline
+      const tts = await pipeline('text-to-speech', 'Xenova/speecht5_tts')
+      
+      // Generate speech
+      const output = await tts(prompt, {
+        speaker_embeddings: 'Xenova/speecht5_tts' // Use appropriate speaker if needed
+      })
+      
+      // Create audio blob
+      const audioBlob = new Blob([output.audio], { type: 'audio/wav' })
+      const audioUrl = URL.createObjectURL(audioBlob)
+      
+      setGeneratedAudio(audioUrl)
+      
+      // Clean up previous audio player
+      if (audioPlayer) {
+        audioPlayer.pause()
+      }
+      
+      // Create new audio player
+      const newAudio = new Audio(audioUrl)
+      setAudioPlayer(newAudio)
+      
+    } catch (error) {
+      console.error('Voice synthesis error:', error)
+      // Handle error
+    } finally {
       setIsGenerating(false)
-    }, 4000) // Slightly longer for voice synthesis
+    }
   }
 
   const handleDownload = () => {
@@ -34,9 +60,13 @@ const VoiceSynthesisPage = () => {
   }
 
   const handlePlayPause = () => {
-    if (generatedAudio) {
+    if (audioPlayer) {
+      if (isPlaying) {
+        audioPlayer.pause()
+      } else {
+        audioPlayer.play()
+      }
       setIsPlaying(!isPlaying)
-      // In a real implementation, you would control an audio element here
     }
   }
 
@@ -201,7 +231,9 @@ const VoiceSynthesisPage = () => {
                     className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center space-x-2"
                   >
                     <ArrowDownTrayIcon className="w-4 h-4" />
+                    <span>Download Audio  .wav
                     <span>Download Audio</span>
+                    </span>
                   </motion.button>
                 </div>
               </div>

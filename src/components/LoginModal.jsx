@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { EyeIcon, EyeSlashIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api';
+
 const LoginModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     email: '',
@@ -313,7 +315,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => window.location.href = 'https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api/auth/google'}
+              onClick={() => window.location.href = `${API_BASE_URL}/auth/google`}
               disabled={loading}
               className="w-full bg-white hover:bg-gray-50 disabled:bg-gray-100 text-gray-900 font-semibold py-2.5 sm:py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 sm:space-x-3 border border-gray-300 text-sm sm:text-base"
             >
