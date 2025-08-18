@@ -1,20 +1,7 @@
 import express from 'express';
 import { authenticateToken } from '../middleware/auth.js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const router = express.Router();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Create images directory if it doesn't exist
-const imagesDir = path.join(__dirname, '../public/images');
-if (!fs.existsSync(imagesDir)) {
-  fs.mkdirSync(imagesDir, { recursive: true });
-}
-
-console.log('Images directory:', imagesDir);
 
 // Hugging Face API query function
 async function query(data) {
@@ -83,26 +70,20 @@ router.post('/generate', authenticateToken, async (req, res) => {
     const arrayBuffer = await imageBlob.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Generate unique filename
+    // Convert to base64 for serverless environment
+    const base64Image = buffer.toString('base64');
+    const dataUrl = `data:image/png;base64,${base64Image}`;
+
+    // Generate timestamp for reference
     const timestamp = Date.now();
-    const filename = `generated_${timestamp}.png`;
-    const filepath = path.join(imagesDir, filename);
 
-    // Save image to disk
-    fs.writeFileSync(filepath, buffer);
-    console.log('Image saved to:', filepath);
-    console.log('File exists:', fs.existsSync(filepath));
-    console.log('File size:', fs.statSync(filepath).size, 'bytes');
-
-    // Return image URL
-    const imageUrl = `/images/${filename}`;
-    console.log('Returning image URL:', imageUrl);
+    console.log('Image generated successfully, size:', buffer.length, 'bytes');
 
     res.json({
       success: true,
       message: 'Image generated successfully',
       data: {
-        imageUrl,
+        imageData: dataUrl,
         prompt,
         timestamp
       }
