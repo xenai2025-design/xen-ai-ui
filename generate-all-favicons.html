@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Xen-AI Complete Favicon Generator</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #1f2937; 
+            color: white; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .favicon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin: 20px 0; 
+        }
+        .favicon-item {
+            background: #374151;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .favicon-preview { 
+            width: 64px; 
+            height: 64px; 
+            background: #000000; 
+            border: 2px solid #f97316;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 15px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .logo-shape {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #f97316, #dc2626);
+            transform: rotate(45deg);
+            border-radius: 4px;
+            position: relative;
+        }
+        .logo-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 2px;
+        }
+        canvas { 
+            border: 1px solid #6b7280; 
+            margin: 10px 0;
+            background: white;
+        }
+        button { 
+            background: #f97316; 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px;
+            font-size: 12px;
+        }
+        button:hover { background: #ea580c; }
+        .size-label { font-weight: bold; margin-bottom: 10px; }
+        .download-all { 
+            background: #059669; 
+            padding: 15px 30px; 
+            font-size: 16px; 
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Xen-AI Complete Favicon Generator</h1>
+    <p>Generate all required favicon sizes for your Xen-AI application with the exact logo design.</p>
+    
+    <button class="download-all" onclick="downloadAllSizes()">📦 Download All Sizes</button>
+    
+    <div class="favicon-grid" id="faviconGrid"></div>
+    
+    <script>
+        const sizes = [
+            { name: 'favicon-16x16.png', size: 16, desc: 'Browser tab (small)' },
+            { name: 'favicon-32x32.png', size: 32, desc: 'Browser tab (standard)' },
+            { name: 'favicon-48x48.png', size: 48, desc: 'Windows taskbar' },
+            { name: 'favicon-64x64.png', size: 64, desc: 'High DPI displays' },
+            { name: 'apple-touch-icon.png', size: 180, desc: 'iOS home screen' },
+            { name: 'android-chrome-192x192.png', size: 192, desc: 'Android home screen' },
+            { name: 'android-chrome-512x512.png', size: 512, desc: 'Android splash screen' }
+        ];
+        
+        function createLogo(ctx, size) {
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Background (black)
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Calculate logo size (about 60% of canvas)
+            const logoSize = size * 0.6;
+            const centerX = size / 2;
+            const centerY = size / 2;
+            
+            // Save context for rotation
+            ctx.save();
+            
+            // Move to center and rotate 45 degrees
+            ctx.translate(centerX, centerY);
+            ctx.rotate(Math.PI / 4);
+            
+            // Create gradient for outer square
+            const gradient = ctx.createLinearGradient(-logoSize/2, -logoSize/2, logoSize/2, logoSize/2);
+            gradient.addColorStop(0, '#f97316');
+            gradient.addColorStop(1, '#dc2626');
+            
+            // Draw rotated outer square with gradient
+            ctx.fillStyle = gradient;
+            ctx.fillRect(-logoSize/2, -logoSize/2, logoSize, logoSize);
+            
+            // Draw inner white square
+            const innerSize = logoSize * 0.4;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(-innerSize/2, -innerSize/2, innerSize, innerSize);
+            
+            // Restore context
+            ctx.restore();
+        }
+        
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadAllSizes() {
+            sizes.forEach((sizeInfo, index) => {
+                setTimeout(() => {
+                    const canvas = document.getElementById(`canvas-${sizeInfo.size}`);
+                    downloadCanvas(canvas, sizeInfo.name);
+                }, index * 200); // Stagger downloads
+            });
+        }
+        
+        function initializeFavicons() {
+            const grid = document.getElementById('faviconGrid');
+            
+            sizes.forEach(sizeInfo => {
+                const item = document.createElement('div');
+                item.className = 'favicon-item';
+                
+                item.innerHTML = `
+                    <div class="size-label">${sizeInfo.size}×${sizeInfo.size}px</div>
+                    <div class="favicon-preview">
+                        <div class="logo-shape">
+                            <div class="logo-inner"></div>
+                        </div>
+                    </div>
+                    <canvas id="canvas-${sizeInfo.size}" width="${sizeInfo.size}" height="${sizeInfo.size}"></canvas>
+                    <div style="font-size: 12px; color: #9ca3af; margin-bottom: 10px;">${sizeInfo.desc}</div>
+                    <button onclick="downloadSingle(${sizeInfo.size}, '${sizeInfo.name}')">
+                        Download ${sizeInfo.name}
+                    </button>
+                `;
+                
+                grid.appendChild(item);
+                
+                // Generate the favicon
+                const canvas = document.getElementById(`canvas-${sizeInfo.size}`);
+                const ctx = canvas.getContext('2d');
+                createLogo(ctx, sizeInfo.size);
+            });
+        }
+        
+        function downloadSingle(size, filename) {
+            const canvas = document.getElementById(`canvas-${size}`);
+            downloadCanvas(canvas, filename);
+        }
+        
+        // Initialize when page loads
+        window.onload = initializeFavicons;
+    </script>
+    
+    <h2>📋 Implementation Instructions</h2>
+    <ol>
+        <li><strong>Download all sizes</strong> using the "Download All Sizes" button above</li>
+        <li><strong>Create favicon.ico</strong>:
+            <ul>
+                <li>Go to <a href="https://favicon.io/favicon-converter/" target="_blank" style="color: #f97316;">favicon.io/favicon-converter/</a></li>
+                <li>Upload your <code>favicon-32x32.png</code></li>
+                <li>Download the generated <code>favicon.ico</code></li>
+            </ul>
+        </li>
+        <li><strong>Place files in public folder</strong>:
+            <ul>
+                <li><code>favicon.ico</code></li>
+                <li><code>favicon-16x16.png</code></li>
+                <li><code>favicon-32x32.png</code></li>
+                <li><code>apple-touch-icon.png</code> (rename the 180x180 file)</li>
+                <li><code>android-chrome-192x192.png</code></li>
+                <li><code>android-chrome-512x512.png</code></li>
+            </ul>
+        </li>
+        <li><strong>Your HTML is already configured!</strong> The favicon links are already in your <code>index.html</code></li>
+    </ol>
+    
+    <h2>🎯 Perfect Brand Match</h2>
+    <p>These favicons exactly match your main Xen-AI logo design:</p>
+    <ul>
+        <li>✅ Same orange-to-red gradient (#f97316 → #dc2626)</li>
+        <li>✅ Same 45-degree rotation</li>
+        <li>✅ Same white inner square</li>
+        <li>✅ Same proportions and styling</li>
+        <li>✅ Black background for consistency</li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Xen-AI Favicon Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1f2937; color: white; }
+        .favicon-preview { 
+            width: 64px; 
+            height: 64px; 
+            background: #1f2937; 
+            border: 2px solid #f97316;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 32px; 
+            font-weight: bold; 
+            color: #f97316;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        button { 
+            background: #f97316; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px;
+        }
+        button:hover { background: #ea580c; }
+    </style>
+</head>
+<body>
+    <h1>Xen-AI Favicon Generator</h1>
+    
+    <div class="favicon-preview" id="preview">
+        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #f97316, #dc2626); transform: rotate(45deg); position: relative; border-radius: 4px;">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); width: 12px; height: 12px; background: white; border-radius: 2px;"></div>
+        </div>
+    </div>
+
+    <div>
+        <label>Size:
+            <select id="size">
+                <option value="16">16x16</option>
+                <option value="32" selected>32x32</option>
+                <option value="64">64x64</option>
+                <option value="128">128x128</option>
+                <option value="180">180x180 (Apple Touch)</option>
+                <option value="192">192x192 (Android)</option>
+                <option value="512">512x512 (Android)</option>
+            </select>
+        </label>
+    </div>
+    
+    <canvas id="canvas" width="32" height="32"></canvas>
+    
+    <div>
+        <button onclick="generateFavicon()">Generate Favicon</button>
+        <button onclick="downloadFavicon()">Download PNG</button>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const preview = document.getElementById('preview');
+        const sizeSelect = document.getElementById('size');
+        
+        function generateFavicon() {
+            const size = parseInt(sizeSelect.value);
+
+            canvas.width = size;
+            canvas.height = size;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+
+            // Background (black)
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, size, size);
+
+            // Calculate logo size (about 60% of canvas)
+            const logoSize = size * 0.6;
+            const centerX = size / 2;
+            const centerY = size / 2;
+
+            // Save context for rotation
+            ctx.save();
+
+            // Move to center and rotate 45 degrees
+            ctx.translate(centerX, centerY);
+            ctx.rotate(Math.PI / 4); // 45 degrees in radians
+
+            // Create gradient for outer square
+            const gradient = ctx.createLinearGradient(-logoSize/2, -logoSize/2, logoSize/2, logoSize/2);
+            gradient.addColorStop(0, '#f97316'); // Orange
+            gradient.addColorStop(1, '#dc2626'); // Red
+
+            // Draw rotated outer square with gradient
+            ctx.fillStyle = gradient;
+            ctx.fillRect(-logoSize/2, -logoSize/2, logoSize, logoSize);
+
+            // Draw inner white square (smaller, centered)
+            const innerSize = logoSize * 0.4;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(-innerSize/2, -innerSize/2, innerSize, innerSize);
+
+            // Restore context
+            ctx.restore();
+
+            // Update preview (show logo symbol instead of text)
+            preview.innerHTML = '<div style="width: 32px; height: 32px; background: linear-gradient(135deg, #f97316, #dc2626); transform: rotate(45deg); position: relative; border-radius: 4px;"><div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); width: 12px; height: 12px; background: white; border-radius: 2px;"></div></div>';
+        }
+        
+        function downloadFavicon() {
+            generateFavicon();
+            const link = document.createElement('a');
+            link.download = `favicon-${sizeSelect.value}x${sizeSelect.value}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Event listeners
+        sizeSelect.addEventListener('change', generateFavicon);
+        
+        // Initial generation
+        generateFavicon();
+    </script>
+    
+    <h2>Instructions:</h2>
+    <ol>
+        <li>Select the desired size from the dropdown</li>
+        <li>Click "Generate Favicon" to create the logo</li>
+        <li>Click "Download PNG" to save the file</li>
+        <li>Generate all required sizes (16x16, 32x32, 64x64, 180x180, 192x192, 512x512)</li>
+        <li>Use an online converter to create favicon.ico from the 16x16 and 32x32 PNG files</li>
+        <li>Place all files in the public folder</li>
+    </ol>
+    
+    <h2>Recommended Sizes:</h2>
+    <ul>
+        <li>favicon.ico (16x16, 32x32 combined)</li>
+        <li>favicon-16x16.png</li>
+        <li>favicon-32x32.png</li>
+        <li>apple-touch-icon.png (180x180)</li>
+        <li>android-chrome-192x192.png</li>
+        <li>android-chrome-512x512.png</li>
+    </ul>
+</body>
+</html>
