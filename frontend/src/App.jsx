@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import MultiModalAI from './components/MultiModalAI'
-import Login from './components/Login'
-import Register from './components/Register'
 import AuthCallback from './components/AuthCallback'
 import { useEffect } from 'react'
 

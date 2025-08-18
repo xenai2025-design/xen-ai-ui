@@ -17,6 +17,8 @@ import {
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../context/AuthContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api';
+
 // Code Block Component with Copy functionality
 const CodeBlock = ({ code, language = 'text' }) => {
   const [copied, setCopied] = useState(false)
@@ -311,7 +313,7 @@ const ChatBot = () => {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat/message', {
+      const response = await fetch(`${API_BASE_URL}/chat/message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -387,7 +389,7 @@ const ChatBot = () => {
 
   const loadChatHistory = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/chat/history', {
+      const response = await fetch(`${API_BASE_URL}/chat/history`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -434,7 +436,7 @@ const ChatBot = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat/history', {
+      const response = await fetch(`${API_BASE_URL}/chat/history`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
