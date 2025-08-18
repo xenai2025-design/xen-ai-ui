@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { buildApiUrl } from '../config/api.js'
 import { DocumentTextIcon, SparklesIcon, ArrowDownTrayIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline'
 
 const ContentWritingPage = () => {
@@ -7,35 +8,33 @@ const ContentWritingPage = () => {
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedContent, setGeneratedContent] = useState('')
   const [contentType, setContentType] = useState('article')
+  const [tone, setTone] = useState('professional')
+  const [contentLength, setContentLength] = useState('medium') // Renamed to avoid conflict with JS length
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return
     
     setIsGenerating(true)
     
-    // Simulate API call
-    setTimeout(() => {
-      const sampleContent = `# ${prompt}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-## Key Points
-
-- **Point 1**: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-- **Point 2**: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-- **Point 3**: Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
-
-## Conclusion
-
-At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
-
----
-
-*This content was generated using AI technology to assist with your writing needs.*`
+    try {
+      const response = await fetch(buildApiUrl('/api/content/generate'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, contentType, tone, length: contentLength })
+      })
       
-      setGeneratedContent(sampleContent)
+      if (!response.ok) throw new Error('Failed to generate content')
+      
+      const data = await response.json()
+      if (data.success) {
+        setGeneratedContent(data.data.content)
+      }
+    } catch (error) {
+      console.error('Content generation error:', error)
+      // Handle error (e.g., show toast)
+    } finally {
       setIsGenerating(false)
-    }, 3000)
+    }
   }
 
   const handleDownload = () => {
@@ -136,7 +135,11 @@ At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praese
               </div>
               <div>
                 <label className="block text-gray-400 text-sm font-medium mb-2">Tone</label>
-                <select className="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <select 
+                  value={tone}
+                  onChange={(e) => setTone(e.target.value)}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
                   <option value="professional">Professional</option>
                   <option value="casual">Casual</option>
                   <option value="friendly">Friendly</option>
@@ -146,7 +149,11 @@ At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praese
               </div>
               <div>
                 <label className="block text-gray-400 text-sm font-medium mb-2">Length</label>
-                <select className="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <select 
+                  value={contentLength}
+                  onChange={(e) => setContentLength(e.target.value)}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
                   <option value="short">Short (100-200 words)</option>
                   <option value="medium">Medium (300-500 words)</option>
                   <option value="long">Long (600-1000 words)</option>
