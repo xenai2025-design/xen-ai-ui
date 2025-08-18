@@ -4,6 +4,26 @@ import configService from '../services/configService.js';
 
 const router = express.Router();
 
+// Fallback AI config from environment when DB/config service is unavailable
+const getEnvAIConfig = () => {
+  const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY || null;
+  if (!apiKey) return null;
+  return {
+    config_name: 'env_default',
+    provider: process.env.AI_PROVIDER || 'openrouter',
+    model_name: process.env.AI_MODEL || 'mistralai/mistral-7b-instruct:free',
+    endpoint_url:
+      process.env.AI_ENDPOINT_URL || 'https://openrouter.ai/api/v1/chat/completions',
+    api_key: apiKey,
+    system_prompt:
+      process.env.AI_SYSTEM_PROMPT ||
+      'You are Xen AI, a helpful AI assistant. Be concise, friendly, and informative in your responses.',
+    max_tokens: Number(process.env.AI_MAX_TOKENS || 1000),
+    temperature: Number(process.env.AI_TEMPERATURE || 0.7),
+    model_params: {}
+  };
+};
+
 // Chat endpoint
 router.post('/message', async (req, res) => {
   try {
@@ -16,37 +36,38 @@ router.post('/message', async (req, res) => {
       });
     }
 
-    // Get AI model configuration
+    // Get AI model configuration with env fallback
     let aiConfig;
     try {
       if (modelConfig && modelConfig.config_name) {
-        // Use specific model configuration if provided
         aiConfig = await configService.getAIModelConfigByName(modelConfig.config_name);
       } else {
-        // Use default configuration
         aiConfig = await configService.getDefaultAIModelConfig();
       }
     } catch (configError) {
-      console.error('Error fetching AI model config:', configError);
-      return res.status(500).json({
-        success: false,
-        message: 'AI service configuration error'
-      });
+      console.warn('Config service unavailable, using env fallback. Error:', configError?.message || configError);
+      aiConfig = getEnvAIConfig();
     }
 
     if (!aiConfig || !aiConfig.api_key) {
-      console.error('AI model configuration not found or missing API key');
-      return res.status(500).json({
-        success: false,
-        message: 'AI service not properly configured'
-      });
+      // Attempt final fallback from env
+      aiConfig = aiConfig || getEnvAIConfig();
+      if (!aiConfig || !aiConfig.api_key) {
+        console.error('AI model configuration not found or missing API key');
+        return res.status(500).json({
+          success: false,
+          message: 'AI service not properly configured'
+        });
+      }
     }
 
-    // Prepare request headers
+    // Prepare request headers (include both Referer and HTTP-Referer to satisfy providers like OpenRouter)
+    const referer = process.env.FRONTEND_URL || 'http://localhost:5173';
     const headers = {
       'Authorization': `Bearer ${aiConfig.api_key}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
+      'HTTP-Referer': referer,
+      'Referer': referer,
       'X-Title': 'Xen AI'
     };
 
