@@ -3,6 +3,8 @@ import { motion } from 'framer-motion'
 import { PhotoIcon, SparklesIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 import { useAuth } from '../context/AuthContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://fxqm8v270a.execute-api.us-east-1.amazonaws.com/dev/api';
+
 const ImageGenerationPage = () => {
   const [prompt, setPrompt] = useState('')
   const [negativePrompt, setNegativePrompt] = useState('')
@@ -23,7 +25,7 @@ const ImageGenerationPage = () => {
     try {
       const [width, height] = imageSize.split('x').map(Number)
       
-      const response = await fetch('http://localhost:5000/api/image/generate', {
+      const response = await fetch(`${API_BASE_URL}/image/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +44,7 @@ const ImageGenerationPage = () => {
       console.log('API Response:', data)
 
       if (data.success) {
-        const imageUrl = `http://localhost:5000${data.data.imageUrl}`
+        const imageUrl = `${API_BASE_URL.replace('/api', '')}${data.data.imageUrl}`
         console.log('Setting image URL:', imageUrl)
         setGeneratedImage(imageUrl)
       } else {
