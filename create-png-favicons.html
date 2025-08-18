@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick PNG Favicon Generator</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #1f2937; 
+            color: white; 
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        button { 
+            background: #f97316; 
+            color: white; 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px;
+            font-size: 16px;
+        }
+        button:hover { background: #ea580c; }
+        .preview { 
+            display: flex; 
+            gap: 20px; 
+            margin: 20px 0; 
+            flex-wrap: wrap;
+        }
+        .preview-item {
+            text-align: center;
+            background: #374151;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        canvas { 
+            border: 1px solid #6b7280; 
+            margin: 10px 0;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Quick PNG Favicon Generator</h1>
+        <p>Generate the essential PNG favicon files for your Xen-AI app.</p>
+        
+        <button onclick="generateAllPNGs()">📦 Generate & Download All PNG Files</button>
+        
+        <div class="preview" id="preview"></div>
+        
+        <h2>📋 Files Generated:</h2>
+        <ul>
+            <li><code>favicon-16x16.png</code> - Browser tab (small)</li>
+            <li><code>favicon-32x32.png</code> - Browser tab (standard)</li>
+            <li><code>apple-touch-icon.png</code> - iOS home screen (180x180)</li>
+            <li><code>android-chrome-192x192.png</code> - Android home screen</li>
+            <li><code>android-chrome-512x512.png</code> - Android splash screen</li>
+        </ul>
+        
+        <h2>🔧 After Download:</h2>
+        <ol>
+            <li>Place all PNG files in your <code>public/</code> folder</li>
+            <li>Update your <code>index.html</code> to include all favicon links</li>
+            <li>Create <code>favicon.ico</code> using an online converter</li>
+        </ol>
+    </div>
+    
+    <script>
+        const sizes = [
+            { name: 'favicon-16x16.png', size: 16 },
+            { name: 'favicon-32x32.png', size: 32 },
+            { name: 'apple-touch-icon.png', size: 180 },
+            { name: 'android-chrome-192x192.png', size: 192 },
+            { name: 'android-chrome-512x512.png', size: 512 }
+        ];
+        
+        function createLogo(ctx, size) {
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Background (black)
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Calculate logo size (about 60% of canvas)
+            const logoSize = size * 0.6;
+            const centerX = size / 2;
+            const centerY = size / 2;
+            
+            // Save context for rotation
+            ctx.save();
+            
+            // Move to center and rotate 45 degrees
+            ctx.translate(centerX, centerY);
+            ctx.rotate(Math.PI / 4);
+            
+            // Create gradient for outer square
+            const gradient = ctx.createLinearGradient(-logoSize/2, -logoSize/2, logoSize/2, logoSize/2);
+            gradient.addColorStop(0, '#f97316');
+            gradient.addColorStop(1, '#dc2626');
+            
+            // Draw rotated outer square with gradient
+            ctx.fillStyle = gradient;
+            ctx.fillRect(-logoSize/2, -logoSize/2, logoSize, logoSize);
+            
+            // Draw inner white square
+            const innerSize = logoSize * 0.4;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(-innerSize/2, -innerSize/2, innerSize, innerSize);
+            
+            // Restore context
+            ctx.restore();
+        }
+        
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function generateAllPNGs() {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+            
+            sizes.forEach((sizeInfo, index) => {
+                // Create preview item
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = sizeInfo.size;
+                canvas.height = sizeInfo.size;
+                canvas.style.width = '64px';
+                canvas.style.height = '64px';
+                
+                const ctx = canvas.getContext('2d');
+                createLogo(ctx, sizeInfo.size);
+                
+                item.innerHTML = `
+                    <div>${sizeInfo.size}×${sizeInfo.size}px</div>
+                    <div style="margin: 10px 0;"></div>
+                    <div style="font-size: 12px; color: #9ca3af;">${sizeInfo.name}</div>
+                `;
+                
+                item.insertBefore(canvas, item.children[1]);
+                preview.appendChild(item);
+                
+                // Download with delay
+                setTimeout(() => {
+                    downloadCanvas(canvas, sizeInfo.name);
+                }, index * 300);
+            });
+        }
+    </script>
+</body>
+</html>
